@@ -7,7 +7,8 @@
         <div class="card-body">
             <div class="card-text" style="white-space: pre-line;">{{ question.content }}</div>
             <div class="d-flex justify-content-end">
-                <div class="badge badge-light p-2">
+                <div class="badge badge-light p-2 text-left">
+                    <div class="mb-2">{{ question.user.username }}</div>
                     {{ question.create_date | datetime }}
                 </div>
             </div>
@@ -19,7 +20,8 @@
         <div class="card-body">
             <div class="card-text" style="white-space: pre-line;">{{ answer.content }}</div>
             <div class="d-flex justify-content-end">
-                <div class="badge badge-light p-2">
+                <div class="badge badge-light p-2 text-left">
+                    <div class="mb-2">{{ answer.user.username }}</div>
                     {{ answer.create_date  | datetime }}
                 </div>
             </div>
@@ -35,7 +37,8 @@
         </div>
         {% endfor %}
         <div class="form-group">
-            <textarea name="content" id="content" class="form-control" rows="10"></textarea>
+            <textarea {% if not g.user %}disabled{% endif %}
+                    name="content" id="content" class="form-control" rows="10"></textarea>
         </div>
         <input type="submit" value="답변등록" class="btn btn-primary">
     </form>
