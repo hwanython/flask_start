@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, url_for, g
+from flask import Blueprint, render_template, request, url_for, g, flash
 
 from pybo.models import Question
 from ..form import  QuestionForm, Answerform
@@ -42,3 +42,25 @@ def create_a():
         db.session.commit()
         return redirect(url_for('main.index'))
     return render_template('question/question_form.html', form=form)
+
+
+@bp.route('/modify/<int:question_id>', methods=('GET', 'POST'))
+@login_required
+def modify(question_id):
+    question = Question.query.get_or_404(question_id)
+    if g.user != question.user:
+        flash('수정 권한이 없소~')
+        return redirect(url_for('question.detail', question_id=question_id))
+    if request.method == 'POST':
+        form = QuestionForm()
+        if form.validate_on_submit():
+            # form.populate_obj(question)는 form 변수에 들어 있는
+            # 데이터(화면에 입력되어 있는 데이터)를 question 객체에 적용해 준다.
+            form.populate_obj(question)
+            question.modify_date = datetime.now()
+            db.session.commit()
+            return redirect(url_for('question.detail', question_id=question_id))
+    else:
+        form = QuestionForm(obj=question)
+    return render_template('question/question_form.html', form=form)
+

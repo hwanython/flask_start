@@ -9,9 +9,15 @@
             <div class="d-flex justify-content-end">
                 <div class="badge badge-light p-2 text-left">
                     <div class="mb-2">{{ question.user.username }}</div>
-                    {{ question.create_date | datetime }}
+                    <div>{{ question.create_date | datetime }}</div>
                 </div>
             </div>
+            {% if g.user == question.user %}
+            <div class="my-3">
+                <a href="{{ url_for('question.modify', question_id=question.id) }}"
+                   class="btn btn-sm btn-outline-secondary">수정</a>
+            </div>
+            {% endif %}
         </div>
     </div>
     <h5 class="border-bottom my-3 py-2">{{ question.answer_set|length }}개의 답변이 있습니다.</h5>
@@ -22,7 +28,7 @@
             <div class="d-flex justify-content-end">
                 <div class="badge badge-light p-2 text-left">
                     <div class="mb-2">{{ answer.user.username }}</div>
-                    {{ answer.create_date  | datetime }}
+                    <div>{{ answer.create_date  | datetime }}</div>
                 </div>
             </div>
         </div>
