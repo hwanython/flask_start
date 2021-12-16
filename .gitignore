@@ -1,2 +1,5 @@
 # python complie file
 pybo/__pycache__/
+__pycache__/
+*/*/__pycache__/
+*/*/*/__pycache__/
